@@ -1,0 +1,188 @@
+/* ── LAYOUT PRINCIPAL ── */
+.board {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  padding: 32px;
+  height: 100%;
+  background: #2c5f8a;
+  font-family: "Segoe UI", sans-serif;
+  user-select: none;
+  /* flex-wrap permite que las columnas se apiLen en pantallas chicas */
+  flex-wrap: wrap;
+}
+
+/* ── COLUMNA ── */
+.column {
+  background: #e8edf2;
+  border-radius: 12px;
+  padding: 16px;
+  /* ancho fijo en desktop, pero se expande en mobile */
+  width: 260px;
+  /* ocupa el espacio vertical disponiente sin overflow */
+  max-height: calc(100% - 64px); /* 64px = padding top+bottom del board */
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.column header {
+  font-weight: 700;
+  font-size: 15px;
+  color: #1a1a2e;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+/* ── LISTA DE CARDS (scrollable si se pasan muchas) ── */
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  flex: 1;
+  /* barra de scroll discreta */
+  scrollbar-width: thin;
+  scrollbar-color: #c5cdd5 transparent;
+}
+
+.cards::-webkit-scrollbar {
+  width: 6px;
+}
+.cards::-webkit-scrollbar-track {
+  background: transparent;
+}
+.cards::-webkit-scrollbar-thumb {
+  background: #c5cdd5;
+  border-radius: 3px;
+}
+
+/* ── FILA: card + botón eliminar ── */
+.card-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── CARD ── */
+.card {
+  flex: 1;
+  background: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 14px;
+  text-align: left;
+  font-size: 14px;
+  color: #1a1a2e;
+  cursor: grab;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  transition: opacity 0.15s;
+  min-width: 0; /* evita que el texto largo rompa el flex */
+}
+
+.card.dragging {
+  opacity: 0.35;
+}
+
+.card.finished {
+  text-decoration: line-through;
+}
+
+/* ── BOTÓN ELIMINAR ── */
+.btn-delete {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  color: #999;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  transition:
+    color 0.15s,
+    background 0.15s;
+}
+
+.btn-delete:hover {
+  color: #d93025;
+  background: #fce8e6;
+}
+
+/* ── BLOQUE AGREGAR (input + botón) ── */
+.add-block {
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.add-block input {
+  border: 2px dashed #c5cdd5;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #1a1a2e;
+  background: rgba(255, 255, 255, 0.6);
+  outline: none;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+
+.add-block input:focus {
+  border-color: #2c5f8a;
+  background: #fff;
+}
+
+.btn-add {
+  background: #2c5f8a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 0;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-add:hover {
+  background: #1e4a6e;
+}
+
+/* ── GHOST (card que sigue al cursor) ── */
+.ghost {
+  position: fixed;
+  width: 200px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 14px;
+  color: #1a1a2e;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  pointer-events: none;
+  z-index: 1000;
+  transform: rotate(2deg) scale(1.05);
+  font-family: inherit;
+}
+
+/* ── RESPONSIVE ── */
+/* En pantallas chicas las columnas se apilan y cada una toma el ancho completo */
+@media (max-width: 600px) {
+  .board {
+    align-items: flex-start;
+    padding: 20px 16px;
+    gap: 16px;
+    /* en mobile permitimos scroll vertical porque dos columnas apiladas no entran */
+    overflow-y: auto;
+  }
+
+  .column {
+    width: 100%;
+    max-height: none;
+  }
+}
